@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="styles/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Rubik:300,400" rel="stylesheet">
+    <title>Document</title>
+</head>
+<body>
+    <!--<img src="https://source.unsplash.com/random" alt="" class="photo-pic">-->
+    <div class="container">
+
+        <div class="header">
+            <img src="images/logo.svg" alt="logo">
+            <h1>Check out our awesome<br> vacation photos!</h1>
+        </div>
+
+        <div class="timeline">
+
+        </div>
+
+    </div>
+
+    <script>
+        var timeline = document.querySelector('.timeline');
+
+        addTimelinePhoto('Yesterday', 'images/Ji9qebSpSlSbnsWRZnDX__MG_9520.jpg');
+        addTimelinePhoto('Last Week', 'images/photo-1462700511548-532461bcfc37.jpg');
+        
+        addTimelineRandomPhotos(2)
+        
+        
+        document.addEventListener('scroll', function(e) {
+            if (document.body.scrollHeight == document.body.scrollTop + window.innerHeight) {
+                addTimelineRandomPhotos(2)
+            }
+        })
+        function addTimelineRandomPhotos(count) {
+            for (i = 0; i < count; i++) {
+                fetch('https://source.unsplash.com/random?sig=' + i)
+                    .then(function(response) {
+                        addTimelinePhoto('Random', response.url)
+                    })
+            }
+        }
+
+        function addTimelinePhoto(text, url) {
+            var animations = ['a-slide-left', 'a-slide-right', 'a-zoom']
+
+            var photo = document.createElement('div');
+            photo.className = "photo";
+
+            var title = document.createElement('h2');
+            title.className = 'photo-title';
+            title.innerHTML = text;
+
+            var image = document.createElement('img');
+            image.className = "photo-pic";
+            image.className += ' ' + animations[getRandomInt(0, animations.length)];
+            image.width = getRandomInt(250, timeline.offsetWidth);
+            image.style.marginLeft = getRandomInt(10, timeline.offsetWidth >= image.width ? timeline.offsetWidth - image.width : timeline.offsetWidth) + 'px';
+            image.src = url;
+
+            photo.appendChild(title);
+            photo.appendChild(image);
+
+            timeline.appendChild(photo);
+
+        }
+
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min)) + min;
+        }
+        
+    </script>
+
+</body>
+</html>
